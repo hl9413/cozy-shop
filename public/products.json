@@ -1,116 +1,316 @@
 [
-  {
-    "id": "p1",
-    "category": "socks",
-    "tag": "new",
-    "title_en": "Marimekko Socks (10 Pairs)",
-    "title_zh": "Marimekko 袜子（10双装）",
-    "price_usd": 6.99,
-    "description_en": "Marimekko quality socks. Size: 36-40. Minimum order: 10 pairs. Please contact seller before purchasing. Factory guaranteed quality.",
-    "sizes": [
-      "36-37",
-      "38-39",
-      "39-40"
-    ],
-    "min_qty": 10,
-    "contact_required": true
-  },
-  {
-    "id": "p7",
-    "category": "bag",
-    "tag": "new",
-    "title_en": "Chrome Hearts Crossbody Bag",
-    "title_zh": "Chrome Hearts 挎包",
-    "price_usd": 285.0,
-    "description_en": "Brand new Chrome Hearts crossbody bag. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
-    "sizes": [
-      "Free Size"
-    ],
-    "min_qty": 1,
-    "contact_required": true
-  },
-  {
-    "id": "p18",
-    "category": "scarf",
-    "tag": "new",
-    "title_en": "Chanel Women's Scarf 2026 Latest Style",
-    "title_zh": "CHANEL 女士围巾 2026最新款",
-    "price_usd": 158.0,
-    "description_en": "Brand new Chanel women's scarf. Latest 2026 style. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
-    "sizes": [
-      "Free Size"
-    ],
-    "min_qty": 1,
-    "contact_required": true
-  },
-  {
-    "id": "p19",
-    "category": "scarf",
-    "tag": "new",
-    "title_en": "LV Women's Scarf 2026 Latest Style",
-    "title_zh": "LV 女士围巾 2026最新款",
-    "price_usd": 168.0,
-    "description_en": "Brand new LV women's scarf. Latest 2026 style. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
-    "sizes": [
-      "Free Size"
-    ],
-    "min_qty": 1,
-    "contact_required": true
-  },
-  {
-    "id": "p20",
-    "category": "scarf",
-    "tag": "new",
-    "title_en": "LV Women's Lightweight Scarf 2026 New Arrival",
-    "title_zh": "LV 女士薄款围巾 2026新款",
-    "price_usd": 168.0,
-    "description_en": "Brand new LV women's lightweight scarf. Latest 2026 new arrival. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
-    "sizes": [
-      "Free Size"
-    ],
-    "min_qty": 1,
-    "contact_required": true
-  },
-  {
-    "id": "p21",
-    "category": "scarf",
-    "tag": "hot",
-    "title_en": "LV Women's Scarf (Style A)",
-    "title_zh": "LV 女士围巾 款式A",
-    "price_usd": 168.0,
-    "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
-    "sizes": [
-      "Free Size"
-    ],
-    "min_qty": 1,
-    "contact_required": true
-  },
-  {
-    "id": "p22",
-    "category": "scarf",
-    "tag": "hot",
-    "title_en": "LV Women's Scarf (Style B)",
-    "title_zh": "LV 女士围巾 款式B",
-    "price_usd": 168.0,
-    "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
-    "sizes": [
-      "Free Size"
-    ],
-    "min_qty": 1,
-    "contact_required": true
-  },
-  {
-    "id": "p23",
-    "category": "scarf",
-    "tag": "hot",
-    "title_en": "LV Women's Scarf (Style C)",
-    "title_zh": "LV 女士围巾 款式C",
-    "price_usd": 168.0,
-    "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
-    "sizes": [
-      "Free Size"
-    ],
-    "min_qty": 1,
-    "contact_required": true
-  }
+ {
+  "id": "p1",
+  "category": "socks",
+  "tag": "new",
+  "title_en": "Marimekko Socks (10 Pairs)",
+  "title_zh": "Marimekko 袜子（10双装）",
+  "price_usd": 6.99,
+  "description_en": "Marimekko quality socks. Size: 36-40. Minimum order: 10 pairs. Please contact seller before purchasing. Factory guaranteed quality.",
+  "sizes": [
+   "36-37",
+   "38-39",
+   "39-40"
+  ],
+  "min_qty": 10,
+  "contact_required": true
+ },
+ {
+  "id": "p7",
+  "category": "bag",
+  "tag": "new",
+  "title_en": "Chrome Hearts Crossbody Bag",
+  "title_zh": "Chrome Hearts 挎包",
+  "price_usd": 285.0,
+  "description_en": "Brand new Chrome Hearts crossbody bag. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": true
+ },
+ {
+  "id": "p18",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Chanel Women's Scarf 2026 Latest Style",
+  "title_zh": "CHANEL 女士围巾 2026最新款",
+  "price_usd": 158.0,
+  "description_en": "Brand new Chanel women's scarf. Latest 2026 style. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": true
+ },
+ {
+  "id": "p19",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "LV Women's Scarf 2026 Latest Style",
+  "title_zh": "LV 女士围巾 2026最新款",
+  "price_usd": 168.0,
+  "description_en": "Brand new LV women's scarf. Latest 2026 style. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": true
+ },
+ {
+  "id": "p20",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "LV Women's Lightweight Scarf 2026 New Arrival",
+  "title_zh": "LV 女士薄款围巾 2026新款",
+  "price_usd": 168.0,
+  "description_en": "Brand new LV women's lightweight scarf. Latest 2026 new arrival. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": true
+ },
+ {
+  "id": "p21",
+  "category": "scarf",
+  "tag": "hot",
+  "title_en": "LV Women's Scarf (Style A)",
+  "title_zh": "LV 女士围巾 款式A",
+  "price_usd": 168.0,
+  "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": true
+ },
+ {
+  "id": "p22",
+  "category": "scarf",
+  "tag": "hot",
+  "title_en": "LV Women's Scarf (Style B)",
+  "title_zh": "LV 女士围巾 款式B",
+  "price_usd": 168.0,
+  "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": true
+ },
+ {
+  "id": "p23",
+  "category": "scarf",
+  "tag": "hot",
+  "title_en": "LV Women's Scarf (Style C)",
+  "title_zh": "LV 女士围巾 款式C",
+  "price_usd": 168.0,
+  "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": true
+ },
+ {
+  "id": "p24",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Milan Solid Cashmere-Feel Scarf",
+  "title_zh": "纯色羊绒感围巾 200x65cm 多色",
+  "price_usd": 39,
+  "description_en": "Wrap up in our best-selling solid cashmere-feel scarf. Generous 200x65 cm cut with a soft, brushed finish that feels far more expensive than it looks. Warm, lightweight and wrinkle-resistant — the everyday scarf that goes with everything. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p24_1.jpg",
+   "p24_2.jpg",
+   "p24_3.jpg",
+   "p24_4.jpg"
+  ]
+ },
+ {
+  "id": "p25",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Classic Fringe Scarf Solid Color",
+  "title_zh": "经典流苏纯色围巾 200x68cm",
+  "price_usd": 39,
+  "description_en": "A timeless solid-color scarf with hand-knotted fringe. Large 200x68 cm wrap style — wear it long, looped or as a shawl. Silky cashmere-feel hand, rich saturated colors. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p25_1.jpg",
+   "p25_2.jpg",
+   "p25_3.jpg",
+   "p25_4.jpg"
+  ]
+ },
+ {
+  "id": "p26",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Heavyweight Winter Scarf 330g",
+  "title_zh": "加厚保暖围巾 330g 冬季款",
+  "price_usd": 45,
+  "description_en": "Our warmest scarf — a full 330 grams of dense, core-spun yarn built for real winter. Substantial drape, deep solid colors, neat fringe. The one you reach for when the temperature drops. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p26_1.jpg",
+   "p26_2.jpg",
+   "p26_3.jpg",
+   "p26_4.jpg"
+  ]
+ },
+ {
+  "id": "p27",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Slim Plaid Knit Scarf",
+  "title_zh": "格纹针织窄款围巾",
+  "price_usd": 25,
+  "description_en": "A slim, easy knit scarf in classic plaids — the perfect accent layer for coats and sweaters. Light, soft and packable for travel. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p27_1.jpg",
+   "p27_2.jpg",
+   "p27_3.jpg",
+   "p27_4.jpg"
+  ]
+ },
+ {
+  "id": "p28",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Wool Blend Two-Way Shawl Scarf",
+  "title_zh": "羊毛拼色披肩两用围巾 200x100cm",
+  "price_usd": 55,
+  "description_en": "One piece, two looks — wear it as a big scarf or open it as a shoulder wrap. Two-tone wool blend in a striking black-and-cream design, an oversized 200x100 cm. Limited stock. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p28_1.jpg",
+   "p28_2.jpg",
+   "p28_3.jpg",
+   "p28_4.jpg"
+  ]
+ },
+ {
+  "id": "p29",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Cat Jacquard Cashmere-Feel Wrap",
+  "title_zh": "小猫提花羊绒感围巾披肩 185x65cm",
+  "price_usd": 45,
+  "description_en": "A whimsical cat-jacquard wrap in soft cashmere-feel yarn. Playful monochrome pattern, generous 185x65 cm — wear it as a scarf or drape it as a shawl. Cute, cozy and endlessly giftable. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p29_1.jpg",
+   "p29_2.jpg",
+   "p29_3.jpg",
+   "p29_4.jpg"
+  ]
+ },
+ {
+  "id": "p30",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Argyle Diamond Knit Scarf",
+  "title_zh": "菱格针织围巾 ins风",
+  "price_usd": 29,
+  "description_en": "A diamond-argyle knit scarf with tassel ends — the trending layering piece of the season. Soft, stretchy knit in muted designer tones. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p30_1.jpg",
+   "p30_2.jpg",
+   "p30_3.jpg",
+   "p30_4.jpg"
+  ]
+ },
+ {
+  "id": "p31",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Cozy Knit Neck Warmer",
+  "title_zh": "针织保暖护颈围脖",
+  "price_usd": 19,
+  "description_en": "A snug knit neck warmer that locks in heat without the bulk. Featherlight, fits in your pocket — ideal for commutes, travel and outdoor days. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p31_1.jpg",
+   "p31_2.jpg",
+   "p31_3.jpg",
+   "p31_4.jpg"
+  ]
+ },
+ {
+  "id": "p32",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Double-Face Jacquard Wrap Scarf",
+  "title_zh": "双面提花加厚围巾披肩",
+  "price_usd": 49,
+  "description_en": "Reversible double-face jacquard — two elegant looks in one scarf. Densely woven cashmere-feel yarn with a refined drape. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p32_1.jpg",
+   "p32_2.jpg",
+   "p32_3.jpg",
+   "p32_4.jpg"
+  ]
+ },
+ {
+  "id": "p33",
+  "category": "scarf",
+  "tag": "new",
+  "title_en": "Deep Ocean Solid Cashmere-Feel Scarf",
+  "title_zh": "海洋蓝色系羊绒感围巾 200x65cm",
+  "price_usd": 39,
+  "description_en": "Our classic solid scarf in a deep ocean-blue palette — from denim to navy. Same luxurious cashmere-feel finish, 200x65 cm, made to layer over everything. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "sizes": [
+   "Free Size"
+  ],
+  "min_qty": 1,
+  "contact_required": false,
+  "images": [
+   "p33_1.jpg",
+   "p33_2.jpg",
+   "p33_3.jpg",
+   "p33_4.jpg"
+  ]
+ }
 ]
