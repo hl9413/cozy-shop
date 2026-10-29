@@ -1,0 +1,116 @@
+[
+  {
+    "id": "p1",
+    "category": "socks",
+    "tag": "new",
+    "title_en": "Marimekko Socks (10 Pairs)",
+    "title_zh": "Marimekko 袜子（10双装）",
+    "price_usd": 6.99,
+    "description_en": "Marimekko quality socks. Size: 36-40. Minimum order: 10 pairs. Please contact seller before purchasing. Factory guaranteed quality.",
+    "sizes": [
+      "36-37",
+      "38-39",
+      "39-40"
+    ],
+    "min_qty": 10,
+    "contact_required": true
+  },
+  {
+    "id": "p7",
+    "category": "bag",
+    "tag": "new",
+    "title_en": "Chrome Hearts Crossbody Bag",
+    "title_zh": "Chrome Hearts 挎包",
+    "price_usd": 285.0,
+    "description_en": "Brand new Chrome Hearts crossbody bag. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+    "sizes": [
+      "Free Size"
+    ],
+    "min_qty": 1,
+    "contact_required": true
+  },
+  {
+    "id": "p18",
+    "category": "scarf",
+    "tag": "new",
+    "title_en": "Chanel Women's Scarf 2026 Latest Style",
+    "title_zh": "CHANEL 女士围巾 2026最新款",
+    "price_usd": 158.0,
+    "description_en": "Brand new Chanel women's scarf. Latest 2026 style. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+    "sizes": [
+      "Free Size"
+    ],
+    "min_qty": 1,
+    "contact_required": true
+  },
+  {
+    "id": "p19",
+    "category": "scarf",
+    "tag": "new",
+    "title_en": "LV Women's Scarf 2026 Latest Style",
+    "title_zh": "LV 女士围巾 2026最新款",
+    "price_usd": 168.0,
+    "description_en": "Brand new LV women's scarf. Latest 2026 style. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+    "sizes": [
+      "Free Size"
+    ],
+    "min_qty": 1,
+    "contact_required": true
+  },
+  {
+    "id": "p20",
+    "category": "scarf",
+    "tag": "new",
+    "title_en": "LV Women's Lightweight Scarf 2026 New Arrival",
+    "title_zh": "LV 女士薄款围巾 2026新款",
+    "price_usd": 168.0,
+    "description_en": "Brand new LV women's lightweight scarf. Latest 2026 new arrival. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+    "sizes": [
+      "Free Size"
+    ],
+    "min_qty": 1,
+    "contact_required": true
+  },
+  {
+    "id": "p21",
+    "category": "scarf",
+    "tag": "hot",
+    "title_en": "LV Women's Scarf (Style A)",
+    "title_zh": "LV 女士围巾 款式A",
+    "price_usd": 168.0,
+    "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+    "sizes": [
+      "Free Size"
+    ],
+    "min_qty": 1,
+    "contact_required": true
+  },
+  {
+    "id": "p22",
+    "category": "scarf",
+    "tag": "hot",
+    "title_en": "LV Women's Scarf (Style B)",
+    "title_zh": "LV 女士围巾 款式B",
+    "price_usd": 168.0,
+    "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+    "sizes": [
+      "Free Size"
+    ],
+    "min_qty": 1,
+    "contact_required": true
+  },
+  {
+    "id": "p23",
+    "category": "scarf",
+    "tag": "hot",
+    "title_en": "LV Women's Scarf (Style C)",
+    "title_zh": "LV 女士围巾 款式C",
+    "price_usd": 168.0,
+    "description_en": "Brand new LV women's scarf. Authentic guaranteed. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy — full refund if not satisfied.",
+    "sizes": [
+      "Free Size"
+    ],
+    "min_qty": 1,
+    "contact_required": true
+  }
+]

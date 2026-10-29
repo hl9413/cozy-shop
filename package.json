@@ -1,0 +1,17 @@
+{
+  "name": "cozy-shop",
+  "version": "1.0.0",
+  "description": "Cozy Luxe Shop – Telegram Mini App with PayPal & TON payments",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev --assets ./public",
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute cozy-shop-db --local --file=./schema.sql",
+    "db:migrate": "wrangler d1 execute cozy-shop-db --file=./schema.sql"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260305.0",
+    "typescript": "^5.0.0",
+    "wrangler": "^4.69.0"
+  }
+}

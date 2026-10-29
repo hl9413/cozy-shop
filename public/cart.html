@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Cart – VIBE</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --coral: #FF6B6B; --peach: #FF8E53; --mint: #4ECDC4;
+      --sky: #45B7D1; --lemon: #FFE66D; --bg: #FFF5F0;
+      --text: #2D2D2D; --mid: #6B6B6B;
+    }
+    html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    .bg-blob { position: fixed; border-radius: 50%; filter: blur(70px); opacity: 0.15; pointer-events: none; z-index: 0; }
+    .bb1 { width: 280px; height: 280px; background: var(--coral); top: -60px; right: -60px; }
+    .bb2 { width: 200px; height: 200px; background: var(--mint); bottom: 100px; left: -60px; }
+    body > * { position: relative; z-index: 1; }
+
+    header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px;
+      background: rgba(255,245,240,0.9); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,107,107,0.1);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .back-btn {
+      background: white; border: 1.5px solid rgba(255,107,107,0.2);
+      border-radius: 50%; width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; cursor: pointer; color: var(--coral);
+      box-shadow: 0 2px 8px rgba(255,107,107,0.15);
+      transition: transform 0.15s;
+    }
+    .back-btn:active { transform: scale(0.9); }
+    .header-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 20px; }
+    .header-title span {
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .page { padding: 16px 16px 32px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+    .card {
+      background: white; border-radius: 20px; padding: 16px;
+      box-shadow: 0 4px 20px rgba(255,107,107,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 16px;
+      margin-bottom: 12px; color: var(--text);
+    }
+
+    /* Cart items */
+    .item-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #FFF0EE; }
+    .item-row:last-child { border-bottom: none; }
+    .item-img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: #FFF0EE; }
+    .item-details { flex: 1; min-width: 0; }
+    .item-name { font-weight: 700; font-size: 13px; color: var(--text);  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-price { font-size: 12px; color: var(--coral); font-weight: 700; margin-top: 2px; }
+    .rm-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: #FFB5B5; padding: 4px; transition: color 0.15s; }
+    .rm-btn:hover { color: var(--coral); }
+
+    .total-row { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 2px dashed #FFE0DB; margin-top: 4px; }
+    .total-label { font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; color: var(--mid); }
+    .total-amount { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 22px; background: linear-gradient(135deg, var(--coral), var(--peach)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* Payment */
+    .pay-label { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); margin-bottom: 10px; }
+    .pay-btn {
+      width: 100%; padding: 14px; border: none; border-radius: 16px;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .pay-btn:active { transform: scale(0.97); }
+    .pay-paypal { background: linear-gradient(135deg, #003087, #009cde); color: white; box-shadow: 0 6px 20px rgba(0,48,135,0.25); margin-bottom: 10px; }
+    .pay-ton { background: linear-gradient(135deg, #0088cc, #00b4d8); color: white; box-shadow: 0 6px 20px rgba(0,136,204,0.25); }
+
+    .divider { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #FFE8E5; }
+    .divider span { font-size: 11px; font-weight: 700; color: #FFB5B5; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    #ton-connect-wrap { margin-top: 8px; }
+
+    /* Status */
+    #status { font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px; padding: 12px 16px; border-radius: 14px; margin-top: 10px; display: none; }
+    .s-ok   { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; }
+    .s-err  { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #991b1b; }
+    .s-info { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1e40af; }
+
+    /* Capture btn */
+    #capture-btn { width: 100%; margin-top: 8px; padding: 12px; border: none; border-radius: 14px; background: linear-gradient(135deg, #10b981, #34d399); color: white; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer; transition: transform 0.15s; box-shadow: 0 4px 14px rgba(16,185,129,0.3); }
+    #capture-btn:active { transform: scale(0.97); }
+
+    /* Checkout form */
+    .field { margin-bottom: 10px; }
+    .field label { display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mid); margin-bottom: 5px; }
+    .field input, .field textarea {
+      width: 100%; padding: 11px 13px; border-radius: 12px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--text); background: #FFF9F7;
+      border: 1.5px solid rgba(255,107,107,0.18); outline: none; transition: border-color 0.15s, background 0.15s;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--coral); background: white; }
+    .field textarea { resize: vertical; min-height: 74px; line-height: 1.4; }
+    .field input.invalid, .field textarea.invalid { border-color: #ef4444; background: #fff5f5; }
+    .field .req { color: var(--coral); }
+    .form-hint { font-size: 11px; color: var(--mid); margin-top: 2px; line-height: 1.5; }
+    .success-box { text-align: center; padding: 22px 16px; }
+    .success-box .big { font-size: 44px; margin-bottom: 8px; }
+    .success-box .ono { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 15px; color: var(--coral); margin-top: 6px; letter-spacing: 0.04em; }
+    .success-box .sub { font-size: 12px; color: var(--mid); margin-top: 6px; line-height: 1.6; }
+
+    /* Empty state */
+    #empty { text-align: center; padding: 48px 24px; display: none; }
+    .empty-emoji { font-size: 56px; margin-bottom: 12px; }
+    .empty-txt { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 18px; color: var(--text); margin-bottom: 6px; }
+    .empty-sub { font-size: 13px; color: var(--mid); margin-bottom: 20px; }
+    .browse-btn { display: inline-block; padding: 12px 28px; background: linear-gradient(135deg, var(--coral), var(--peach)); color: white; border: none; border-radius: 24px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 6px 20px rgba(255,107,107,0.35); transition: transform 0.15s; }
+    .browse-btn:active { transform: scale(0.96); }
+  </style>
+</head>
+<body>
+  <div class="bg-blob bb1"></div>
+  <div class="bg-blob bb2"></div>
+
+  <header>
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="header-title">🛍️ <span>My Cart</span></div>
+  </header>
+
+  <div class="page">
+    <!-- Empty state -->
+    <div id="empty">
+      <div class="empty-emoji">🛍️</div>
+      <div class="empty-txt">Your cart is empty!</div>
+      <div class="empty-sub">Go find something cute 💕</div>
+      <button class="browse-btn" onclick="goBack()">Browse Products</button>
+    </div>
+
+    <!-- Cart items -->
+    <div class="card" id="cart-card" style="display:none;">
+      <div class="card-title">🛒 Cart Items</div>
+      <div id="cart-items"></div>
+      <div class="total-row">
+        <span class="total-label">Total</span>
+        <span class="total-amount" id="total-amt"></span>
+      </div>
+    </div>
+
+    <!-- Shipping info -->
+    <div class="card" id="ship-card" style="display:none;">
+      <div class="card-title">📮 Shipping Info</div>
+      <div class="field">
+        <label for="f-name">Full name <span class="req">*</span></label>
+        <input id="f-name" type="text" autocomplete="name" placeholder="Your full name" />
+      </div>
+      <div class="field">
+        <label for="f-email">Email <span class="req">*</span></label>
+        <input id="f-email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label for="f-phone">Phone / WhatsApp <span class="req">*</span></label>
+        <input id="f-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+1 555 000 0000" />
+      </div>
+      <div class="field">
+        <label for="f-addr">Shipping address <span class="req">*</span></label>
+        <textarea id="f-addr" autocomplete="street-address" placeholder="Country / State / City&#10;Street, building, apt&#10;Postal code"></textarea>
+      </div>
+      <div class="field">
+        <label for="f-note">Note (optional)</label>
+        <input id="f-note" type="text" placeholder="Color, size or delivery note" />
+      </div>
+      <div class="form-hint">* We need this to ship your order. Used only for delivery.</div>
+    </div>
+
+    <!-- Payment -->
+    <div class="card" id="pay-card" style="display:none;">
+      <div class="card-title">💳 Payment</div>
+
+      <div class="pay-label">Pay with PayPal</div>
+      <button class="pay-btn pay-paypal" id="pp-btn" onclick="doPayPal()">
+        🅿️ PayPal
+      </button>
+      <div id="capture-wrap"></div>
+
+      <div class="divider"><span>or</span></div>
+
+      <div class="pay-label">Pay with TON Crypto</div>
+      <button class="pay-btn pay-ton" id="ton-btn" onclick="doTON()">
+        💎 TON Wallet
+      </button>
+      <div id="ton-connect-wrap"></div>
+
+      <div id="status"></div>
+    </div>
+
+    <!-- Order success -->
+    <div class="card" id="done-card" style="display:none;">
+      <div class="success-box">
+        <div class="big">🎉</div>
+        <div class="card-title" style="margin-bottom:0;">Order confirmed!</div>
+        <div class="ono" id="done-no"></div>
+        <div class="sub">We received your order and shipping info.<br>You'll get a confirmation by email.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor?.('#FFF5F0'); tg.setBackgroundColor?.('#FFF5F0'); }
+
+  const MANIFEST_URL = window.location.origin + '/tonconnect-manifest.json';
+  let cart = [], tonUI = null, TON_ADDR = 'UQC-reyAFyUoFRZ6jGI51RvsaDF4dsRQIk9PIvUeC-IL3xbb';
+
+  function loadCart() { try{return JSON.parse(localStorage.getItem('vibe_cart')||'[]');}catch{return[];} }
+  function saveCart() { localStorage.setItem('vibe_cart', JSON.stringify(cart)); }
+  function getTotal() { return cart.reduce((s,p)=>s+Number(p.price_usd||0),0); }
+
+  function render() {
+    const empty = document.getElementById('empty');
+    const cartCard = document.getElementById('cart-card');
+    const payCard = document.getElementById('pay-card');
+    const itemsEl = document.getElementById('cart-items');
+    itemsEl.innerHTML = '';
+
+    if (!cart.length) {
+      empty.style.display = 'block';
+      cartCard.style.display = 'none';
+      document.getElementById('ship-card').style.display = 'none';
+      payCard.style.display = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    cartCard.style.display = 'block';
+    document.getElementById('ship-card').style.display = 'block';
+    payCard.style.display = 'block';
+
+    cart.forEach((p, i) => {
+      const row = document.createElement('div'); row.className = 'item-row';
+      row.innerHTML = `
+        <img class="item-img" src="${(p.images&&p.images[0])||'/images/default-placeholder.jpg'}" onerror="this.src='/images/default-placeholder.jpg'" />
+        <div class="item-details">
+          <div class="item-name">${p.title_en||'Product'}</div>
+          <div class="item-price">$${Number(p.price_usd||0).toFixed(2)}</div>
+        </div>
+        <button class="rm-btn" onclick="removeItem(${i})">✕</button>
+      `;
+      itemsEl.appendChild(row);
+    });
+    document.getElementById('total-amt').textContent = `$${getTotal().toFixed(2)}`;
+  }
+
+  function removeItem(i) {
+    cart.splice(i,1); saveCart();
+    tg?.HapticFeedback?.impactOccurred('light');
+    render();
+  }
+
+  function setStatus(msg, type='info') {
+    const el = document.getElementById('status');
+    el.style.display = 'block'; el.textContent = msg;
+    el.className = type==='ok'?'s-ok':type==='err'?'s-err':'s-info';
+  }
+
+  // ---------- Checkout: shipping info ----------
+  const SHIP_KEY = 'vibe_ship_info';
+
+  function loadShipInfo() {
+    try { return JSON.parse(localStorage.getItem(SHIP_KEY) || '{}'); } catch { return {}; }
+  }
+
+  function restoreShipInfo() {
+    const s = loadShipInfo();
+    const map = { 'f-name': s.name, 'f-email': s.email, 'f-phone': s.phone, 'f-addr': s.address, 'f-note': s.note };
+    Object.entries(map).forEach(([id, v]) => { if (v) document.getElementById(id).value = v; });
+  }
+
+  function collectCustomer() {
+    const tgUser = tg?.initDataUnsafe?.user || null;
+    const data = {
+      name: document.getElementById('f-name').value.trim(),
+      email: document.getElementById('f-email').value.trim(),
+      phone: document.getElementById('f-phone').value.trim(),
+      address: document.getElementById('f-addr').value.trim(),
+      note: document.getElementById('f-note').value.trim(),
+      tg_user_id: tgUser?.id ? String(tgUser.id) : '',
+      tg_username: tgUser?.username || ''
+    };
+    localStorage.setItem(SHIP_KEY, JSON.stringify({
+      name: data.name, email: data.email, phone: data.phone, address: data.address, note: data.note
+    }));
+    return data;
+  }
+
+  function validateCheckout() {
+    const c = collectCustomer();
+    const checks = [
+      ['f-name', !!c.name],
+      ['f-email', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c.email)],
+      ['f-phone', c.phone.replace(/\D/g, '').length >= 6],
+      ['f-addr', c.address.length >= 8]
+    ];
+    let firstBad = null;
+    checks.forEach(([id, ok]) => {
+      const el = document.getElementById(id);
+      el.classList.toggle('invalid', !ok);
+      if (!ok && !firstBad) firstBad = el;
+    });
+    if (firstBad) {
+      setStatus('⚠️ Please fill in name, a valid email, phone and full shipping address.', 'err');
+      firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstBad.focus({ preventScroll: true });
+      tg?.HapticFeedback?.notificationOccurred('error');
+      return false;
+    }
+    return true;
+  }
+
+  function buildOrderPayload(paymentMethod, paymentRef, cryptoAmount) {
+    const c = collectCustomer();
+    return {
+      customer: c,
+      items: cart.map(p => ({
+        product_id: p.id || '',
+        title_en: p.title_en || p.title || 'Item',
+        size: p.selectedSize || '',
+        qty: 1,
+        price_usd: Number(p.price_usd || 0)
+      })),
+      total_usd: getTotal(),
+      payment_method: paymentMethod,
+      payment_ref: paymentRef || '',
+      crypto_amount: cryptoAmount || '',
+      tg_user_id: c.tg_user_id,
+      tg_username: c.tg_username
+    };
+  }
+
+  function finishOrder(orderNo) {
+    document.getElementById('done-no').textContent = orderNo ? 'Order No. ' + orderNo : '';
+    document.getElementById('cart-card').style.display = 'none';
+    document.getElementById('ship-card').style.display = 'none';
+    document.getElementById('pay-card').style.display = 'none';
+    document.getElementById('done-card').style.display = 'block';
+    tg?.HapticFeedback?.notificationOccurred('success');
+  }
+
+  // PayPal
+  async function doPayPal() {
+    const total = getTotal(); if (!total) return;
+    if (!validateCheckout()) return;
+    document.getElementById('pp-btn').disabled = true;
+    setStatus('⏳ Creating PayPal order...', 'info');
+    try {
+      const res = await fetch('/api/paypal/create-order', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({amount_usd:total}) });
+      const data = await res.json();
+      if (data.error) { setStatus('❌ '+data.error,'err'); document.getElementById('pp-btn').disabled=false; return; }
+      const url = data.approveUrl || `https://www.paypal.com/checkoutnow?token=${data.orderId}`;
+      setStatus('🔗 Opening PayPal...', 'info');
+      tg?.openLink ? tg.openLink(url) : window.open(url,'_blank');
+      setStatus('✅ Complete payment in PayPal, then tap Confirm below.', 'ok');
+      const wrap = document.getElementById('capture-wrap');
+      wrap.innerHTML = '';
+      const btn = document.createElement('button'); btn.id='capture-btn';
+      btn.textContent = '✅ I paid – Confirm Order';
+      btn.onclick = ()=>capturePayPal(data.orderId);
+      wrap.appendChild(btn);
+    } catch(e) { setStatus('❌ '+e.message,'err'); }
+    document.getElementById('pp-btn').disabled = false;
+  }
+
+  async function capturePayPal(orderId) {
+    setStatus('⏳ Confirming...','info');
+    try {
+      const res = await fetch('/api/paypal/capture-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId, order: buildOrderPayload('paypal', orderId)})});
+      const data = await res.json();
+      if (data.success) {
+        setStatus('🎉 Payment done! Thank you!','ok');
+        cart=[]; saveCart();
+        finishOrder(data.orderNo);
+      } else { setStatus('⚠️ Status: '+data.status,'err'); }
+    } catch(e) { setStatus('❌ '+e.message,'err'); }
+  }
+
+  // TON
+  async function doTON() {
+    if (!validateCheckout()) return;
+    document.getElementById('ton-btn').disabled = true;
+    setStatus('⏳ Loading TON Connect...','info');
+    try {
+      await new Promise((res,rej)=>{ let t=0; const iv=setInterval(()=>{ t++; if(window.TON_CONNECT_UI?.TonConnectUI){clearInterval(iv);res();} if(t>100){clearInterval(iv);rej(new Error('TON UI not loaded'));} },100); });
+      if (!tonUI) {
+        tonUI = new window.TON_CONNECT_UI.TonConnectUI({ manifestUrl:MANIFEST_URL, buttonRootId:'ton-connect-wrap' });
+        document.getElementById('ton-connect-wrap').style.display='block';
+      }
+      if (!TON_ADDR) {
+        const r = await fetch('/api/ton/address').catch(()=>null);
+        if (r&&r.ok) { const d=await r.json(); TON_ADDR=d.address||''; }
+      }
+      if (!TON_ADDR) { setStatus('❌ TON address not configured.','err'); document.getElementById('ton-btn').disabled=false; return; }
+      if (!tonUI.wallet) { setStatus('👛 Connect your TON wallet...','info'); await tonUI.openModal(); await new Promise((res,rej)=>{let t=0;const iv=setInterval(()=>{t++;if(tonUI.wallet){clearInterval(iv);res();}if(t>600){clearInterval(iv);rej(new Error('No wallet'));}},100);}); }
+      const total = getTotal();
+      setStatus('⏳ Fetching live TON rate...','info');
+      let rate = 0;
+      try {
+        const rr = await fetch('/api/ton/rate', { cache: 'no-store' });
+        const rd = await rr.json();
+        rate = Number(rd.price_usd || 0);
+      } catch (e) { console.error('rate fetch failed', e); }
+      if (!rate) {
+        setStatus('❌ TON rate unavailable right now. Please use PayPal or try again in a minute.', 'err');
+        document.getElementById('ton-btn').disabled = false;
+        return;
+      }
+      const tonAmount = total / rate;
+      const nano = Math.ceil(tonAmount * 1e9);
+      setStatus(`💎 Sending ≈${tonAmount.toFixed(3)} TON ($${total.toFixed(2)})...`,'info');
+      const tx = await tonUI.sendTransaction({ validUntil:Math.floor(Date.now()/1000)+600, messages:[{address:TON_ADDR,amount:String(nano)}] });
+      const txRef = (tx && (tx.boc || tx.bocHash)) ? String(tx.boc).slice(0, 64) : '';
+      setStatus('⏳ Recording your order...','info');
+      let orderNo = '';
+      try {
+        const r = await fetch('/api/orders', { method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(buildOrderPayload('ton', txRef, `${tonAmount.toFixed(4)} TON @ $${rate.toFixed(2)}/TON`)) });
+        const d = await r.json();
+        orderNo = d.orderNo || '';
+      } catch(e) { console.error('order submit failed', e); }
+      setStatus('🎉 TON payment sent! Thank you!','ok');
+      cart=[]; saveCart();
+      finishOrder(orderNo);
+    } catch(e) { setStatus('❌ '+( e.message||String(e)),'err'); }
+    document.getElementById('ton-btn').disabled = false;
+  }
+
+  function goBack() { window.history.length>1?window.history.back():window.location.href='/'; }
+
+  cart = loadCart();
+  restoreShipInfo();
+  render();
+  </script>
+</body>
+</html>

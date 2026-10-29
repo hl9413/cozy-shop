@@ -1,0 +1,10 @@
+node_modules/
+.wrangler/
+.admin-key.txt
+.dev.vars
+.env*
+*.bak
+dist/
+*.log
+.cart_script_check.js
+__pycache__/

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>VIBE STORE</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --coral:    #FF6B6B;
+      --peach:    #FF8E53;
+      --mint:     #4ECDC4;
+      --sky:      #45B7D1;
+      --lemon:    #FFE66D;
+      --lavender: #C9B8FF;
+      --white:    #FFFFFF;
+      --cream:    #FFF8F5;
+      --text:     #2D2D2D;
+      --text-mid: #6B6B6B;
+      --card-bg:  #FFFFFF;
+      --bg:       #FFF5F0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── ANIMATED BG BLOBS ── */
+    .bg-blobs {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.18;
+    }
+    .blob-1 { width: 300px; height: 300px; background: var(--coral); top: -80px; right: -60px; animation: drift1 8s ease-in-out infinite; }
+    .blob-2 { width: 250px; height: 250px; background: var(--mint); bottom: 200px; left: -80px; animation: drift2 10s ease-in-out infinite; }
+    .blob-3 { width: 200px; height: 200px; background: var(--lemon); top: 40%; right: -40px; animation: drift1 12s ease-in-out infinite reverse; }
+    @keyframes drift1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,30px) scale(1.1)} }
+    @keyframes drift2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(25px,-20px) scale(1.08)} }
+
+    body > * { position: relative; z-index: 1; }
+
+    /* ── MARQUEE ── */
+    .marquee-bar {
+      background: linear-gradient(90deg, var(--coral), var(--peach), var(--coral));
+      background-size: 200% 100%;
+      animation: gradshift 4s linear infinite;
+      overflow: hidden; white-space: nowrap; padding: 7px 0;
+    }
+    @keyframes gradshift { 0%{background-position:0%} 100%{background-position:200%} }
+    .marquee-inner { display: inline-block; animation: scroll 22s linear infinite; }
+    .marquee-inner span {
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: 11px; letter-spacing: 0.18em; color: white;
+      text-transform: uppercase; padding: 0 20px;
+    }
+    .marquee-inner span::before { content: '✦'; margin-right: 20px; opacity: 0.7; }
+    @keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px;
+      background: rgba(255,245,240,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,107,107,0.12);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .logo {
+      font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-size: 22px; letter-spacing: -0.01em; line-height: 1;
+      background: linear-gradient(135deg, var(--coral), var(--peach), var(--mint));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .logo-dot { display: inline-block; width: 7px; height: 7px; background: var(--lemon); border-radius: 50%; margin-left: 2px; vertical-align: middle; animation: bop 1.2s ease-in-out infinite; }
+    @keyframes bop { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .lang-btn {
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      border: none; color: white;
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 20px; cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 3px 10px rgba(255,107,107,0.3);
+    }
+    .lang-btn:active { transform: scale(0.94); }
+
+    /* ── HERO ── */
+    .hero { padding: 22px 18px 18px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, rgba(255,107,107,0.12), rgba(78,205,196,0.12));
+      border: 1px solid rgba(255,107,107,0.2);
+      border-radius: 20px; padding: 5px 14px;
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: 11px; letter-spacing: 0.12em; color: var(--coral);
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .hero-tag::before { content: '🔥'; font-size: 13px; }
+
+    .hero-h1 {
+      font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-size: clamp(36px, 11vw, 52px);
+      line-height: 1.05; letter-spacing: -0.02em; color: var(--text);
+      margin-bottom: 10px;
+    }
+    .hero-h1 .grad {
+      background: linear-gradient(135deg, var(--coral), var(--peach), var(--mint));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-p {
+      font-size: 13px; color: var(--text-mid); line-height: 1.6;
+      max-width: 300px; margin-bottom: 16px;
+    }
+
+    /* Floating pills */
+    .hero-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill {
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 12px;
+      padding: 5px 14px; border-radius: 20px; white-space: nowrap;
+    }
+    .pill-coral { background: rgba(255,107,107,0.12); color: var(--coral); border: 1px solid rgba(255,107,107,0.25); }
+    .pill-mint  { background: rgba(78,205,196,0.12);  color: #2aada5;     border: 1px solid rgba(78,205,196,0.25); }
+    .pill-lemon { background: rgba(255,230,109,0.2);  color: #b8960a;     border: 1px solid rgba(255,230,109,0.4); }
+
+    /* ── CATEGORIES ── */
+    .cats-wrap { padding: 16px 18px 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .cats-wrap::-webkit-scrollbar { display: none; }
+    .cat {
+      flex-shrink: 0;
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 12px;
+      padding: 8px 16px; border-radius: 24px; cursor: pointer;
+      border: 1.5px solid rgba(255,107,107,0.2);
+      background: white; color: var(--text-mid);
+      transition: all 0.2s; white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .cat.on {
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      color: white; border-color: transparent;
+      box-shadow: 0 4px 14px rgba(255,107,107,0.35);
+      transform: translateY(-1px);
+    }
+
+    /* ── SECTION HEAD ── */
+    .sec-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 18px 12px;
+    }
+    .sec-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-size: 20px; color: var(--text);
+    }
+    .sec-count {
+      font-size: 12px; color: var(--text-mid); font-weight: 600;
+      background: rgba(255,107,107,0.08); padding: 3px 10px; border-radius: 12px;
+    }
+
+    /* ── PRODUCT GRID ── */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 14px 100px; }
+
+    .card {
+      background: white; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(255,107,107,0.08), 0 1px 4px rgba(0,0,0,0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(255,107,107,0.1); }
+
+    /* Carousel */
+    .car { overflow: hidden; aspect-ratio: 4/3; background: #ffffff; position: relative; }
+    .car-track { display: flex; height: 100%; transition: transform 0.32s cubic-bezier(.4,0,.2,1); will-change: transform; }
+    .car-slide { min-width: 100%; height: 100%; }
+    .car-slide img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
+
+    /* Dots */
+    .car-dots { display: flex; justify-content: center; gap: 4px; padding: 8px 0 2px; }
+    .dot { width: 4px; height: 4px; border-radius: 50%; background: #FFD5CC; transition: all 0.2s; }
+    .dot.on { background: var(--coral); width: 14px; border-radius: 3px; }
+
+    /* Tags */
+    .tag-wrap { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; }
+    .tag {
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 9px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 8px; display: inline-block;
+    }
+    .tag-new { background: linear-gradient(135deg, var(--coral), var(--peach)); color: white; }
+    .tag-hot { background: linear-gradient(135deg, #FF6FD8, #3813C2); color: white; }
+    .tag-sale { background: linear-gradient(135deg, var(--mint), var(--sky)); color: white; }
+
+    /* Card info */
+    .card-info { padding: 10px 12px 12px; }
+    .card-cat {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--coral); margin-bottom: 3px;
+    }
+    .card-name {
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px;
+      line-height: 1.2; color: var(--text); margin-bottom: 8px;
+    }
+    .card-row { display: flex; align-items: center; justify-content: space-between; }
+    .card-price {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 16px;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .add-btn {
+      width: 30px; height: 30px; border-radius: 50%; border: none;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      color: white; font-size: 18px; font-weight: 300;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 3px 10px rgba(255,107,107,0.4);
+    }
+    .add-btn:active { transform: scale(0.85); box-shadow: 0 1px 5px rgba(255,107,107,0.3); }
+
+    /* ── SKELETON ── */
+    .sk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 14px; }
+    .sk-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+    .sk-img { aspect-ratio: 4/3; background: linear-gradient(135deg, #FFE8E5, #FFF0EE); animation: shimmer 1.4s ease-in-out infinite; }
+    .sk-info { padding: 10px 12px; }
+    .sk-line { height: 10px; border-radius: 6px; background: #FFE8E5; margin-bottom: 8px; animation: shimmer 1.4s ease-in-out infinite; }
+    .sk-line.s { width: 60%; }
+    @keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* ── FAB ── */
+    #fab {
+      position: fixed; bottom: 20px; right: 16px; z-index: 200;
+      display: none; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      color: white; border: none; border-radius: 28px;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px;
+      padding: 13px 20px; cursor: pointer;
+      box-shadow: 0 8px 28px rgba(255,107,107,0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+      animation: fab-in 0.3s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes fab-in { from{transform:scale(0) translateY(20px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
+    #fab:active { transform: scale(0.95); box-shadow: 0 4px 16px rgba(255,107,107,0.3); }
+    .fab-badge {
+      background: white; color: var(--coral);
+      font-size: 12px; font-weight: 900;
+      border-radius: 10px; padding: 1px 8px; min-width: 22px; text-align: center;
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 82px; left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      color: white;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px;
+      padding: 10px 22px; border-radius: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      white-space: nowrap; z-index: 300;
+      box-shadow: 0 6px 20px rgba(255,107,107,0.35);
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── FOOTER ── */
+    .foot {
+      text-align: center; padding: 16px 18px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      color: rgba(45,45,45,0.3); text-transform: uppercase;
+    }
+
+    /* Entry animation for cards */
+    .card { opacity: 0; animation: card-in 0.4s ease forwards; }
+    @keyframes card-in { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  </style>
+   <link rel="canonical" href="https://milanstreet.store/" />
+</head>
+<body>
+
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar"><div class="marquee-inner" id="mq"></div></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">VIBE<span class="logo-dot"></span></div>
+    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">中文</button>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag" id="h-tag">New Season Drop</div>
+    <h1 class="hero-h1" id="h-title">
+      Your Style,<br><span class="grad">Your Vibe ✨</span>
+    </h1>
+    <p class="hero-p" id="h-sub">Scarves, sneakers, hats, bags & fits — made for girls who move, shine & slay.</p>
+    <div class="hero-pills" id="h-pills">
+      <span class="pill pill-coral">🧣 Scarves</span>
+      <span class="pill pill-mint">👟 Shoes</span>
+      <span class="pill pill-lemon">🎒 Bags</span>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <div class="cats-wrap" id="cats"></div>
+
+  <!-- SECTION HEAD -->
+  <div class="sec-head">
+    <div class="sec-title" id="sec-title">✨ All Drops</div>
+    <div class="sec-count" id="sec-count"></div>
+  </div>
+
+  <!-- SKELETON -->
+  <div class="sk-grid" id="skeleton">
+    <div class="sk-card"><div class="sk-img"></div><div class="sk-info"><div class="sk-line"></div><div class="sk-line s"></div></div></div>
+    <div class="sk-card"><div class="sk-img"></div><div class="sk-info"><div class="sk-line"></div><div class="sk-line s"></div></div></div>
+    <div class="sk-card"><div class="sk-img"></div><div class="sk-info"><div class="sk-line"></div><div class="sk-line s"></div></div></div>
+    <div class="sk-card"><div class="sk-img"></div><div class="sk-info"><div class="sk-line"></div><div class="sk-line s"></div></div></div>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid" id="grid"></div>
+
+  <div class="foot" id="foot-txt">Free worldwide shipping on orders $80+ 🌍</div>
+
+  <!-- FAB -->
+  <button id="fab" onclick="goCart()">
+    🛍️ <span id="fab-lbl">Cart</span>
+    <span class="fab-badge" id="fab-n">0</span>
+  </button>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script>
+  const tg = window.Telegram?.WebApp;
+  if (tg) {
+    tg.ready(); tg.expand();
+    tg.setHeaderColor?.('#FFF5F0');
+    tg.setBackgroundColor?.('#FFF5F0');
+  }
+
+  let lang = 'en', allP = [], shown = [], activeCat = 'ALL', cart = [];
+
+  const T = {
+    en: {
+      tag: '🔥 New Season Drop',
+      titleHtml: 'Your Style,<br><span class="grad">Your Vibe ✨</span>',
+      sub: 'Scarves, sneakers, hats, bags & fits — made for girls who move, shine & slay.',
+      pills: ['🧣 Scarves','👟 Shoes','🎒 Bags'],
+      sec: '✨ All Drops', toast: '🛍️ Added to cart!',
+      cartLbl: 'Cart', foot: 'Free worldwide shipping on orders $80+ 🌍',
+      toggle: '中文', catAll: 'All', items: 'items',
+      cats: { scarf:'Scarves', shoes:'Shoes', hat:'Hats', accessories:'Accessories', bag:'Bags', top:'Tops', pants:'Pants', socks:'Socks' }
+    },
+    zh: {
+      tag: '🔥 新季新品上架',
+      titleHtml: '你的风格，<br><span class="grad">你的态度 ✨</span>',
+      sub: '围巾、鞋子、帽子、饰品、包包、上衣、裤子——专为爱运动爱生活的你。',
+      pills: ['🧣 围巾','👟 鞋子','🎒 包包'],
+      sec: '✨ 全部商品', toast: '🛍️ 已加入购物车！',
+      cartLbl: '购物车', foot: '满 $80 全球免运费 🌍',
+      toggle: 'EN', catAll: '全部', items: '件',
+      cats: { scarf:'围巾', shoes:'鞋子', hat:'帽子', accessories:'饰品', bag:'包包', top:'上衣', pants:'裤子', socks:'袜子' }
+    }
+  };
+  const CATS = ['ALL','socks','scarf','bag'];
+  const CAT_EMOJI = { ALL:'🌟', scarf:'🧣', shoes:'👟', hat:'🧢', accessories:'💎', bag:'🎒', top:'👕', pants:'👖', socks:'🧦' };
+
+  // Marquee
+  (function(){
+    const words = ['FREE SHIP $80+','NEW DROPS','SCARVES & SHOES','HATS & BAGS','TOPS & PANTS','FRESH FITS ONLY','GIRL APPROVED'];
+    document.getElementById('mq').innerHTML = (words.map(w=>`<span>${w}</span>`).join('')).repeat(2);
+  })();
+
+  function toggleLang() { lang = lang==='en'?'zh':'en'; applyLang(); buildCats(); renderGrid(); }
+
+  function applyLang() {
+    const t = T[lang];
+    document.getElementById('lang-btn').textContent = t.toggle;
+    document.getElementById('h-tag').textContent = t.tag;
+    document.getElementById('h-title').innerHTML = t.titleHtml;
+    document.getElementById('h-sub').textContent = t.sub;
+    document.getElementById('h-pills').innerHTML = t.pills.map(p=>`<span class="pill pill-coral">${p}</span>`).join('');
+    document.getElementById('sec-title').textContent = t.sec;
+    document.getElementById('foot-txt').textContent = t.foot;
+    document.getElementById('fab-lbl').textContent = t.cartLbl;
+    document.getElementById('sec-count').textContent = shown.length + ' ' + t.items;
+  }
+
+  function buildCats() {
+    const t = T[lang];
+    const wrap = document.getElementById('cats');
+    wrap.innerHTML = '';
+    CATS.forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = 'cat' + (c===activeCat?' on':'');
+      const label = c==='ALL' ? t.catAll : (t.cats[c]||c);
+      btn.textContent = (CAT_EMOJI[c]||'') + ' ' + label;
+      btn.onclick = () => {
+        activeCat = c;
+        shown = c==='ALL' ? [...allP] : allP.filter(p=>p.category===c);
+        buildCats(); applyLang(); renderGrid();
+      };
+      wrap.appendChild(btn);
+    });
+  }
+
+  function makeCarousel(imgs, alt) {
+    const wrap = document.createElement('div'); wrap.className = 'car';
+    const track = document.createElement('div'); track.className = 'car-track';
+    imgs.forEach(src => {
+      const sl = document.createElement('div'); sl.className = 'car-slide';
+      const im = document.createElement('img'); im.src = src; im.alt = alt; im.loading = 'lazy';
+      im.onerror = () => { im.src = '/images/default-placeholder.jpg'; };
+      sl.appendChild(im); track.appendChild(sl);
+    });
+    wrap.appendChild(track);
+
+    const dotsEl = document.createElement('div'); dotsEl.className = 'car-dots';
+    const dots = imgs.map((_,i) => {
+      const d = document.createElement('div'); d.className = 'dot'+(i===0?' on':''); dotsEl.appendChild(d); return d;
+    });
+
+    let idx = 0;
+    function go(n) { idx=(n+imgs.length)%imgs.length; track.style.transform=`translateX(${-idx*100}%)`; dots.forEach((d,i)=>d.classList.toggle('on',i===idx)); }
+    if (imgs.length > 1) {
+      let sx = 0;
+      wrap.addEventListener('touchstart', e=>{sx=e.touches[0].clientX;},{passive:true});
+      wrap.addEventListener('touchend', e=>{ const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>28)go(dx<0?idx+1:idx-1); },{passive:true});
+    }
+    wrap.appendChild(dotsEl);
+    return wrap;
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    const t = T[lang];
+    shown.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.animationDelay = (i * 0.06) + 's';
+
+      // Carousel with tags
+      const carEl = makeCarousel(p.images || ['/images/default-placeholder.jpg'], p.title_en);
+      if (p.tag) {
+        const tagWrap = document.createElement('div'); tagWrap.className = 'tag-wrap';
+        const tag = document.createElement('span');
+        tag.className = 'tag tag-' + p.tag;
+        tag.textContent = p.tag === 'new' ? 'NEW' : p.tag === 'hot' ? 'HOT🔥' : p.tag.toUpperCase();
+        tagWrap.appendChild(tag); carEl.appendChild(tagWrap);
+      }
+      card.appendChild(carEl);
+
+      // Info
+      const info = document.createElement('div'); info.className = 'card-info';
+      const cat = document.createElement('div'); cat.className = 'card-cat'; cat.textContent = t.cats[p.category] || '';
+      const name = document.createElement('div'); name.className = 'card-name'; name.textContent = lang==='zh'?(p.title_zh||p.title_en):p.title_en;
+      const row = document.createElement('div'); row.className = 'card-row';
+      const price = document.createElement('div'); price.className = 'card-price'; price.textContent = `$${Number(p.price_usd).toFixed(2)}`;
+      const btn = document.createElement('button'); btn.className = 'add-btn'; btn.innerHTML = '+';
+      btn.onclick = e => { e.stopPropagation(); addCart(p); };
+      row.appendChild(price); row.appendChild(btn);
+      info.appendChild(cat); info.appendChild(name); info.appendChild(row);
+      card.appendChild(info);
+
+      // Click card → product detail page
+      card.onclick = () => {
+        window.location.href = `/product.html?id=${p.id}&lang=${lang}`;
+      };
+
+      grid.appendChild(card);
+    });
+  }
+
+  function loadCart() { try{return JSON.parse(localStorage.getItem('vibe_cart')||'[]');}catch{return[];} }
+  function saveCart() { localStorage.setItem('vibe_cart', JSON.stringify(cart)); updateFab(); }
+  function addCart(p) {
+    cart.push({...p}); saveCart();
+    tg?.HapticFeedback?.impactOccurred('medium');
+    showToast(T[lang].toast);
+  }
+  function updateFab() {
+    const n = cart.length;
+    document.getElementById('fab-n').textContent = n;
+    document.getElementById('fab').style.display = n > 0 ? 'flex' : 'none';
+  }
+  function goCart() { window.location.href = '/cart.html'; }
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove('show'), 2000);
+  }
+
+  async function init() {
+    try {
+      const r = await fetch('/api/products'); if(!r.ok) throw 0;
+      allP = await r.json();
+    } catch {
+      try { const r = await fetch('/products.json'); allP = await r.json(); } catch { allP = []; }
+    }
+    document.getElementById('skeleton').style.display = 'none';
+    shown = [...allP]; cart = loadCart();
+    applyLang(); buildCats(); renderGrid(); updateFab();
+  }
+  init();
+  </script>
+</body>
+</html>

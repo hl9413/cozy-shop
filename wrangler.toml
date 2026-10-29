@@ -1,0 +1,18 @@
+name = "cozy-shop"
+main = "src/index.ts"
+compatibility_date = "2026-01-15"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Uncomment and fill in after creating a D1 database:
+[[d1_databases]]
+binding = "DB"
+database_name = "cozy-shop-db"
+database_id = "92e492f8-d584-4b2b-b8f0-7aa151d2482b"
+
+# Set secrets via: wrangler secret put BOT_TOKEN
+# Set secrets via: wrangler secret put PAYPAL_CLIENT_ID
+# Set secrets via: wrangler secret put PAYPAL_CLIENT_SECRET
+# Order notifications: TELEGRAM_CHAT_ID, NOTIFY_EMAIL, RESEND_API_KEY, ADMIN_KEY

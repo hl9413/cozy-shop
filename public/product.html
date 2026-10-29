@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Product – VIBE</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --coral: #FF6B6B; --peach: #FF8E53; --mint: #4ECDC4;
+      --bg: #FFF5F0; --text: #2D2D2D; --mid: #6B6B6B;
+      --white: #ffffff;
+    }
+    html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px;
+      background: rgba(255,245,240,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,107,107,0.1);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .back {
+      background: white; border: 1.5px solid rgba(255,107,107,0.2);
+      border-radius: 50%; width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; cursor: pointer; color: var(--coral);
+      box-shadow: 0 2px 8px rgba(255,107,107,0.12);
+      transition: transform 0.15s; flex-shrink: 0;
+    }
+    .back:active { transform: scale(0.9); }
+    .header-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 16px; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .header-cart {
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      border: none; border-radius: 20px; padding: 6px 14px;
+      color: white; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 12px;
+      cursor: pointer; white-space: nowrap;
+    }
+
+    /* ── MAIN IMAGE CAROUSEL ── */
+    .main-car-wrap { position: relative; background: #FFFFFF; border-bottom: 1px solid #f0f0f0; }
+    .main-car { overflow: hidden; aspect-ratio: 4/3; }
+    .main-track { display: flex; height: 100%; transition: transform 0.35s cubic-bezier(.4,0,.2,1); will-change: transform; }
+    .main-slide { min-width: 100%; height: 100%; }
+    .main-slide img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
+
+    /* Arrows */
+    .car-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.85); border: none; border-radius: 50%;
+      width: 36px; height: 36px; font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1); z-index: 10;
+      transition: all 0.15s;
+    }
+    .car-arrow:active { transform: translateY(-50%) scale(0.9); }
+    .car-prev { left: 10px; }
+    .car-next { right: 10px; }
+
+    /* Counter badge */
+    .car-counter {
+      position: absolute; bottom: 10px; right: 12px;
+      background: rgba(0,0,0,0.4); color: white;
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 12px;
+      padding: 3px 10px; border-radius: 12px;
+    }
+
+    /* Tag on image */
+    .img-tag {
+      position: absolute; top: 12px; left: 12px;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 10px;
+    }
+    .tag-new { background: linear-gradient(135deg, var(--coral), var(--peach)); color: white; }
+    .tag-hot { background: linear-gradient(135deg, #FF6FD8, #3813C2); color: white; }
+
+    /* ── THUMBNAIL STRIP ── */
+    .thumb-strip {
+      display: flex; gap: 8px; padding: 10px 14px;
+      overflow-x: auto; scrollbar-width: none;
+      background: #fafafa; border-bottom: 1px solid #f0f0f0;
+    }
+    .thumb-strip::-webkit-scrollbar { display: none; }
+    .thumb {
+      flex-shrink: 0; width: 72px; height: 72px; border-radius: 10px;
+      overflow: hidden; cursor: pointer;
+      border: 2px solid #eee; transition: all 0.2s; background: #fff;
+    }
+    .thumb.on { border-color: var(--coral); box-shadow: 0 2px 8px rgba(255,107,107,0.3); }
+    .thumb img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
+
+    /* ── PRODUCT INFO ── */
+    .info { padding: 18px 16px 120px; }
+
+    .info-cat {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--coral); margin-bottom: 6px;
+    }
+    .info-name {
+      font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-size: 24px; line-height: 1.15; color: var(--text); margin-bottom: 10px;
+    }
+    .info-price {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 28px;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 16px;
+    }
+
+    /* Rating row */
+    .rating-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .stars { color: #FFB347; font-size: 14px; letter-spacing: 2px; }
+    .rating-txt { font-size: 12px; color: var(--mid); font-weight: 600; }
+
+    /* Divider */
+    .divider { height: 1px; background: #FFE8E5; margin: 16px 0; }
+
+    /* Description */
+    .desc-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; color: var(--text); margin-bottom: 8px; }
+    .desc-txt { font-size: 13px; color: var(--mid); line-height: 1.7; }
+
+    /* Size selector */
+    .size-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; color: var(--text); margin: 16px 0 10px; }
+    .sizes { display: flex; gap: 8px; flex-wrap: wrap; }
+    .size-btn {
+      padding: 7px 16px; border-radius: 20px;
+      border: 1.5px solid #FFD5CC; background: white;
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px;
+      color: var(--text); cursor: pointer; transition: all 0.15s;
+    }
+    .size-btn.on {
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      color: white; border-color: transparent;
+      box-shadow: 0 3px 10px rgba(255,107,107,0.3);
+    }
+
+    /* Features */
+    .features { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    .feat {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(255,107,107,0.06); border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 11px; font-weight: 700; color: var(--mid);
+    }
+    .feat span { font-size: 14px; }
+
+    /* ── BOTTOM BAR ── */
+    .bottom-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,245,240,0.96);
+      backdrop-filter: blur(16px);
+      padding: 12px 16px 20px;
+      border-top: 1px solid rgba(255,107,107,0.1);
+      display: flex; gap: 10px;
+    }
+    .qty-wrap {
+      display: flex; align-items: center; gap: 0;
+      background: white; border: 1.5px solid #FFD5CC; border-radius: 24px;
+      overflow: hidden;
+    }
+    .qty-btn {
+      background: none; border: none; width: 36px; height: 44px;
+      font-size: 18px; font-weight: 300; color: var(--coral);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .qty-btn:active { background: #FFE8E5; }
+    .qty-num { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; min-width: 28px; text-align: center; }
+    .add-cart-btn {
+      flex: 1; background: linear-gradient(135deg, var(--coral), var(--peach));
+      color: white; border: none; border-radius: 24px;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+      box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .add-cart-btn:active { transform: scale(0.97); box-shadow: 0 3px 10px rgba(255,107,107,0.25); }
+
+    /* Toast */
+    #toast {
+      position: fixed; bottom: 90px; left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      color: white; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px;
+      padding: 10px 22px; border-radius: 24px;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s;
+      white-space: nowrap; z-index: 300;
+      box-shadow: 0 6px 20px rgba(255,107,107,0.35);
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Loading */
+    #loading { display: flex; align-items: center; justify-content: center; min-height: 60vh; font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--coral); font-size: 16px; }
+    #content { display: none; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <button class="back" onclick="goBack()">←</button>
+    <div class="header-title" id="h-title">Product</div>
+    <button class="header-cart" onclick="goCart()">🛍️ <span id="cart-n">0</span></button>
+  </header>
+
+  <div id="loading">⏳ Loading...</div>
+
+  <div id="content">
+    <!-- Main carousel -->
+    <div class="main-car-wrap">
+      <div class="main-car">
+        <div class="main-track" id="main-track"></div>
+      </div>
+      <button class="car-arrow car-prev" id="prev-btn">‹</button>
+      <button class="car-arrow car-next" id="next-btn">›</button>
+      <div class="car-counter" id="counter">1 / 1</div>
+      <div class="img-tag" id="img-tag" style="display:none"></div>
+    </div>
+
+    <!-- Thumbnail strip -->
+    <div class="thumb-strip" id="thumb-strip"></div>
+
+    <!-- Info -->
+    <div class="info">
+      <div class="info-cat" id="info-cat"></div>
+      <div class="info-name" id="info-name"></div>
+      <div class="info-price" id="info-price"></div>
+
+      <div class="rating-row">
+        <div class="stars">★★★★★</div>
+        <div class="rating-txt">4.9 · 328 reviews</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="desc-title" id="desc-title">About this item</div>
+      <div class="desc-txt" id="desc-txt"></div>
+
+      <div class="size-title" id="size-title">Select Size</div>
+      <div class="sizes" id="sizes"></div>
+
+      <div class="contact-notice" id="contact-notice"></div>
+      <div class="min-qty-note" id="min-qty-note"></div>
+
+      <div class="features">
+        <div class="feat"><span>🚚</span> Free shipping $80+</div>
+        <div class="feat"><span>↩️</span> 30-day returns</div>
+        <div class="feat"><span>✅</span> Authentic</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <div class="qty-wrap">
+      <button class="qty-btn" onclick="changeQty(-1)">−</button>
+      <div class="qty-num" id="qty">1</div>
+      <button class="qty-btn" onclick="changeQty(1)">+</button>
+    </div>
+    <button class="add-cart-btn" onclick="addToCart()">
+      🛍️ <span id="add-btn-txt">Add to Cart</span>
+    </button>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor?.('#FFF5F0'); tg.setBackgroundColor?.('#FFF5F0'); }
+
+  const T = {
+    en: { about:'About this item', size:'Select Size', add:'Add to Cart', toast:'🛍️ Added to cart!', loading:'Loading...' },
+    zh: { about:'商品详情', size:'选择尺码', add:'加入购物车', toast:'🛍️ 已加入购物车！', loading:'加载中...' }
+  };
+
+  const CAT_NAMES = {
+    en: { scarf:'Scarves',shoes:'Shoes',hat:'Hats',accessories:'Accessories',bag:'Bags',top:'Tops',pants:'Pants',socks:'Socks' },
+    zh: { scarf:'围巾',shoes:'鞋子',hat:'帽子',accessories:'饰品',bag:'包包',top:'上衣',pants:'裤子',socks:'袜子' }
+  };
+
+  const SIZES = {
+    shoes:  ['38','39','40','41','42','43','44','45'],
+    hat:    ['S/M','M/L','L/XL','Free'],
+    pants:  ['XS','S','M','L','XL'],
+    top:    ['XS','S','M','L','XL','XXL'],
+    scarf:  ['Free Size'],
+    accessories: ['Free Size'],
+    bag:    ['Free Size'],
+    socks:  ['36-37','38-39','39-40'],
+  };
+
+  let product = null, lang = 'en', curIdx = 0, qty = 1, selectedSize = '', minQty = 1;
+  let cart = [];
+
+  function loadCart() { try{return JSON.parse(localStorage.getItem('vibe_cart')||'[]');}catch{return[];} }
+  function saveCart() { localStorage.setItem('vibe_cart',JSON.stringify(cart)); updateCartBadge(); }
+  function updateCartBadge() { document.getElementById('cart-n').textContent = cart.length; }
+
+  // Get product id from URL
+  const params = new URLSearchParams(window.location.search);
+  const pid = params.get('id');
+  const langParam = params.get('lang');
+  if (langParam === 'zh') lang = 'zh';
+
+  async function loadProduct() {
+    let products = [];
+    try {
+      const r = await fetch('/api/products'); if(!r.ok) throw 0;
+      products = await r.json();
+    } catch {
+      try { const r = await fetch('/products.json'); products = await r.json(); } catch {}
+    }
+    product = products.find(p => p.id === pid) || products[0];
+    if (product) renderProduct();
+  }
+
+  function renderProduct() {
+    const t = T[lang];
+    const catNames = CAT_NAMES[lang];
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+
+    const name = lang==='zh' ? (product.title_zh||product.title_en) : product.title_en;
+    document.getElementById('h-title').textContent = name;
+    document.getElementById('info-cat').textContent = catNames[product.category] || product.category || '';
+    document.getElementById('info-name').textContent = name;
+    document.getElementById('info-price').textContent = `$${Number(product.price_usd).toFixed(2)}`;
+    document.getElementById('desc-title').textContent = t.about;
+    document.getElementById('desc-txt').textContent = lang==='zh' ? (product.description_zh||product.description_en) : product.description_en;
+    document.getElementById('size-title').textContent = t.size;
+    document.getElementById('add-btn-txt').textContent = t.add;
+
+    // Tag
+    if (product.tag) {
+      const tagEl = document.getElementById('img-tag');
+      tagEl.style.display = 'block';
+      tagEl.className = 'img-tag tag-' + product.tag;
+      tagEl.textContent = product.tag === 'new' ? 'NEW' : 'HOT🔥';
+    }
+
+    // Images
+    const images = product.images || ['/images/default-placeholder.jpg'];
+    buildCarousel(images);
+    buildThumbs(images);
+
+    // Min qty
+    minQty = product.min_qty || 1;
+    qty = minQty;
+    document.getElementById('qty').textContent = qty;
+
+    // Contact notice
+    if (product.contact_required) {
+      const notice = document.getElementById('contact-notice');
+      if (notice) {
+        notice.style.display = 'block';
+        notice.innerHTML = lang === 'zh'
+          ? '⚠️ 购买前请先联系卖家，提供收货地址及付款凭证。'
+          : '⚠️ Please contact seller before purchasing. Provide your shipping address & proof of payment.';
+      }
+    }
+    // Min qty note
+    if (product.min_qty && product.min_qty > 1) {
+      const note = document.getElementById('min-qty-note');
+      if (note) {
+        note.textContent = lang === 'zh'
+          ? `📦 最低购买数量：${product.min_qty} 双`
+          : `📦 Minimum order: ${product.min_qty} pairs`;
+      }
+    }
+
+    // Sizes
+    buildSizes(product.sizes || product.category);
+  }
+
+  function buildCarousel(images) {
+    const track = document.getElementById('main-track');
+    track.innerHTML = '';
+    images.forEach(src => {
+      const slide = document.createElement('div'); slide.className = 'main-slide';
+      const img = document.createElement('img'); img.src = src; img.loading = 'lazy';
+      img.onerror = () => { img.src = '/images/default-placeholder.jpg'; };
+      slide.appendChild(img); track.appendChild(slide);
+    });
+    updateCounter(images.length);
+
+    // Touch swipe
+    let sx = 0;
+    const car = document.querySelector('.main-car');
+    car.addEventListener('touchstart', e=>{sx=e.touches[0].clientX;},{passive:true});
+    car.addEventListener('touchend', e=>{
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 40) goSlide(dx < 0 ? curIdx+1 : curIdx-1, images.length);
+    },{passive:true});
+
+    document.getElementById('prev-btn').onclick = () => goSlide(curIdx-1, images.length);
+    document.getElementById('next-btn').onclick = () => goSlide(curIdx+1, images.length);
+  }
+
+  function goSlide(n, total) {
+    curIdx = (n + total) % total;
+    document.getElementById('main-track').style.transform = `translateX(${-curIdx*100}%)`;
+    updateCounter(total);
+    document.querySelectorAll('.thumb').forEach((t,i) => t.classList.toggle('on', i===curIdx));
+    document.querySelector('.thumb-strip').children[curIdx]?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  }
+
+  function updateCounter(total) {
+    document.getElementById('counter').textContent = `${curIdx+1} / ${total}`;
+  }
+
+  function buildThumbs(images) {
+    const strip = document.getElementById('thumb-strip');
+    strip.innerHTML = '';
+    images.forEach((src, i) => {
+      const div = document.createElement('div'); div.className = 'thumb' + (i===0?' on':'');
+      const img = document.createElement('img'); img.src = src; img.loading = 'lazy';
+      img.onerror = () => { img.src = '/images/default-placeholder.jpg'; };
+      div.appendChild(img);
+      div.onclick = () => goSlide(i, images.length);
+      strip.appendChild(div);
+    });
+  }
+
+  function buildSizes(categoryOrArr) {
+    const sizeList = Array.isArray(categoryOrArr) ? categoryOrArr : (SIZES[categoryOrArr] || ['Free Size']);
+    const wrap = document.getElementById('sizes');
+    wrap.innerHTML = '';
+    sizeList.forEach((s, i) => {
+      const btn = document.createElement('button'); btn.className = 'size-btn' + (i===0?' on':'');
+      btn.textContent = s;
+      if (i===0) selectedSize = s;
+      btn.onclick = () => {
+        selectedSize = s;
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('on'));
+        btn.classList.add('on');
+      };
+      wrap.appendChild(btn);
+    });
+  }
+
+  function changeQty(d) {
+    const minQty = (product && product.min_qty) ? product.min_qty : 1;
+    qty = Math.max(minQty, Math.min(99, qty + d));
+    document.getElementById('qty').textContent = qty;
+  }
+
+  function addToCart() {
+    if (!product) return;
+    for (let i = 0; i < qty; i++) {
+      cart.push({ ...product, selectedSize });
+    }
+    saveCart();
+    tg?.HapticFeedback?.impactOccurred('medium');
+    showToast(T[lang].toast);
+  }
+
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove('show'), 2000);
+  }
+
+  function goBack() { window.history.length>1 ? window.history.back() : window.location.href='/'; }
+  function goCart() { window.location.href = '/cart.html'; }
+
+  cart = loadCart();
+  updateCartBadge();
+  loadProduct();
+  const canonical = document.createElement('link');
+  canonical.rel = 'canonical';
+  canonical.href = window.location.href.split('?')[0];
+  document.head.appendChild(canonical);
+  </script>
+</body>
+</html>
