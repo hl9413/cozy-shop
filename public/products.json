@@ -197,10 +197,10 @@
   "id": "p28",
   "category": "scarf",
   "tag": "new",
-  "title_en": "Wool Blend Two-Way Shawl Scarf",
-  "title_zh": "羊毛拼色披肩两用围巾 200x100cm",
-  "price_usd": 55,
-  "description_en": "One piece, two looks — wear it as a big scarf or open it as a shoulder wrap. Two-tone wool blend in a striking black-and-cream design, an oversized 200x100 cm. Limited stock. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "title_en": "Big Check Plaid Knit Scarf",
+  "title_zh": "大方块格纹针织围巾",
+  "price_usd": 25,
+  "description_en": "A cozy knit scarf with a bold big-check pattern — classic academia style in rich burgundy and cream. Soft, warm and perfectly weighted. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
   "sizes": [
    "Free Size"
   ],
@@ -209,8 +209,7 @@
   "images": [
    "p28_1.jpg",
    "p28_2.jpg",
-   "p28_3.jpg",
-   "p28_4.jpg"
+   "p28_3.jpg"
   ]
  },
  {
@@ -267,7 +266,6 @@
   "min_qty": 1,
   "contact_required": false,
   "images": [
-   "p31_1.jpg",
    "p31_2.jpg",
    "p31_3.jpg",
    "p31_4.jpg"
@@ -277,10 +275,10 @@
   "id": "p32",
   "category": "scarf",
   "tag": "new",
-  "title_en": "Double-Face Jacquard Wrap Scarf",
-  "title_zh": "双面提花加厚围巾披肩",
-  "price_usd": 49,
-  "description_en": "Reversible double-face jacquard — two elegant looks in one scarf. Densely woven cashmere-feel yarn with a refined drape. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
+  "title_en": "Reindeer Christmas Knit Scarf",
+  "title_zh": "麋鹿圣诞提花针织围巾",
+  "price_usd": 25,
+  "description_en": "Festive reindeer-and-pine jacquard knit in classic Christmas red and cream. The holiday scarf you will wear every December — soft, warm, gift-ready. Free shipping. Delivery to USA, Canada & Europe in 8-12 days. 30-day return policy.",
   "sizes": [
    "Free Size"
   ],
@@ -289,8 +287,7 @@
   "images": [
    "p32_1.jpg",
    "p32_2.jpg",
-   "p32_3.jpg",
-   "p32_4.jpg"
+   "p32_3.jpg"
   ]
  },
  {
