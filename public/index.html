@@ -425,7 +425,8 @@
   function makeCarousel(imgs, alt) {
     const wrap = document.createElement('div'); wrap.className = 'car';
     const track = document.createElement('div'); track.className = 'car-track';
-    imgs.forEach(src => {
+    imgs.forEach(raw => {
+      const src = (/^(https?:)?\//.test(raw)) ? raw : '/images/' + raw;
       const sl = document.createElement('div'); sl.className = 'car-slide';
       const im = document.createElement('img'); im.src = src; im.alt = alt; im.loading = 'lazy';
       im.onerror = () => { im.src = '/images/default-placeholder.jpg'; };

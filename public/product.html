@@ -344,7 +344,8 @@
     }
 
     // Images
-    const images = product.images || ['/images/default-placeholder.jpg'];
+    const images = (product.images || []).map(src => (/^(https?:)?\//.test(src)) ? src : '/images/' + src);
+    if (!images.length) images.push('/images/default-placeholder.jpg');
     buildCarousel(images);
     buildThumbs(images);
 
